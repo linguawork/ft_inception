@@ -1,5 +1,6 @@
 
-#resource: 
+#resource: https://habr.com/ru/company/ruvds/blog/486682/
+
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 .PHONY: help build up start down destroy stop restart logs logs-api ps login-timescale login-api db-shell
 help:
