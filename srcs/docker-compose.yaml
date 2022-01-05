@@ -1,10 +1,18 @@
 #simple version
 version: "3.5"
 
-networks:
-        localhost:
+
+# Указываем сеть 'localhost' в которой будут общаться контейнеры Сети можно дать имя чтобы было удобно смотреть при проверке работы сети
+#вообще сети в Docker Compose создается по умолчанию и не прописывается в явном виде
+#cетей может быть несколько и каждому контейнеру можно указывать отдельные сети чтобы контейнеры не могли общаться друг с другом
+#больше информации смотри в документации на сайте Docker Compose: https://docs.docker.com/compose/networking/
+networks: 
+        localhost: 
                 name: inet
 
+
+
+# в volumes сеть не указывается 
 volumes:
         wordpress:
                 name: wordpress
@@ -22,6 +30,8 @@ volumes:
                         type: none
 
 
+
+#3 контейнера: nginx, mariadb, wordpress общаются в одной сети "localhost" (имя в ней уже есть и здесь оно не упоманиается)
 services:
         nginx:
                 depends_on:
