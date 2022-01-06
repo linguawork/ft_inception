@@ -16,10 +16,28 @@ networks:
 volumes:
         wordpress:
                 name: wordpress
+
+                #driver is local by default for host device, for external the driver is flocker
+                #even if you dont define driver explicitly it will be set as local by default
                 driver: local
+
+                #the options specified under driver_opts are similar to the options that are used for the mount command.
+                #https://stackoverflow.com/questions/59836742/docker-driver-opts-type-none/64198068
                 driver_opts:
+
+                        #the folders should be written in advance by a user or they can be prepared in makefile just before running docker-compose up
                         device: /home/areggie/data/wordpress
+                        #o means that the parameters after it can be written using comma
+                        #Параметр -o указывает список параметров, разделенных запятыми. Source: https://www.opennet.ru/man.shtml?topic=mount&category=8
+                        #Дополнительно The only particularly notable option for routine use is that setting --opt o=bind --opt device=/some/source/dir uses Linux mount options to create a bind mount in a Docker named volume. 
+                        #source https://stackoverflow.com/questions/62232676/docker-local-volume-driver-options
+                        #опция o:bind  все равно что --opt o=bind --opt device=/some/source/dir, т.е. это привязка директории на хосте но за пределами контроля Докера 
+                        #источник: https://www.youtube.com/watch?v=VOK06Q4QqvE&lc=UgyGTRJVq-s8OYhv9Sh4AaABAg.9WpMjzFkhdx9WqePmeJdVs (watch 11:29)
                         o: bind
+                        #The none just means that there is no physical disk partition linked to the mount point you see when issuing the mount command. 
+                        #It is used for virtual filesystems like shm, ramfs, proc and tmpfs.
+                        #https://stackoverflow.com/questions/59836742/docker-driver-opts-type-none/64198068
+                        #https://unix.stackexchange.com/questions/136646/what-is-type-none-for-mount-points-and-why-are-mount-points-of-the-same-type-b/136689#136689
                         type: none
         mariadb:
                 name: mariadb
