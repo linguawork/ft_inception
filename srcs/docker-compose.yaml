@@ -1,4 +1,10 @@
+
+#The difference between Docker and Docker-compose is simple: docker commands are focused on only one container (or image) 
+#at once while docker-compose manage several containers docker.
+
+
 #simple version
+
 version: "3.5"
 
 
@@ -50,19 +56,38 @@ volumes:
 
 
 #3 контейнера: nginx, mariadb, wordpress общаются в одной сети "localhost" (имя в ней уже есть и здесь оно не упоманиается)
+#Docker service is the IMAGE for a microservice within the context of some larger application. Examples of services might include an HTTP server, a database, or any other type of executable program that you wish to run in a distributed environment.
+
 services:
+        # A Docker image (or container, or container image) contains application code, libraries, tools, dependencies and other files needed to make an application run.
+        # Docker Hub is a service provided by Docker for finding and sharing container images with your team.
         nginx:
+                #зависит от контейнера wordpress (это значит сперва соберется wordpress a потом nginх)
                 depends_on:
                         - wordpress
+                
+                #Specify a custom container name, rather than a generated default name. У контейнеров должны быть уникальные имена(это лучше чем по дефолту так как могут быть ошибки)
                 container_name: nginx_debian
+                
+                #Path to docker compose file directory (which has subdirectory ./nginx with nginx image).Из образа в этой папке собирается контейнер NGINX
                 build: ./nginx
+
+                #the image to be pulled from repo of DockerHub
                 image: nginx
+
+                #стыковка портов слева направо: host (локальная машина)  : порт контейнера
                 ports:
                         - "443:443"
+                
+                #стыковка томов на хосте : в контейнере (to save the changes and instant copying if there is a change on any side)
+                #практичный подход чтобы сохранялись изменения в томах даже после выключения контейнеров
                 volumes:
                         - wordpress:/var/www/wordpress
+                
+                #установленная сеть для коммуникаций между контейнерами в рамках сети
                 networks:
                         - localhost
+                #флаг постоянного перезапуска если контейнер упадет
                 restart: always
         mariadb:  
                 container_name: mariadb_debian
