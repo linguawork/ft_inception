@@ -72,7 +72,9 @@ services:
                 #Path to docker compose file directory (which has subdirectory ./nginx with nginx image).Из образа в этой папке собирается контейнер NGINX
                 build: ./nginx
 
-                #the image to be pulled from repo of DockerHub
+                #random image name (according to subj we need to have the name of the service, that same name here) 
+                #the image is pulled directly from Docker Hub (чтобы не скачивать образ из Хаба нужно просто дать непохожее имя для сервисов и образа)
+                #https://dker.ru/docs/docker-compose/compose-file-reference/#image
                 image: nginx
 
                 #стыковка портов слева направо: host (локальная машина)  : порт контейнера
