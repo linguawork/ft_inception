@@ -1,0 +1,8 @@
+#the commands can be written in lower case(big letters are for differentiation matters)
+#but in VSCode we still have colored fonts for differentiation
+From debian:buster
+Run apt-get update
+Run apt-get install nginx -y
+Run apt-get install openssl -y
+#req - 
+Run openssl req
