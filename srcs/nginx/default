@@ -2,22 +2,36 @@ server
 {	
 	#listening to the port for requests from the web
 	#https server setting (Http +SSL + TLS)
-	
+
+    #The server configuration block usually includes a listen directive to specify the IP address and port (or Unix domain socket and path) on which the server listens for requests. Both IPv4 and IPv6 addresses are accepted; enclose IPv6 addresses in square brackets.
     #IPv4
     listen 443 ssl;
 	
     #IPv6
     listen [::]:443 ssl; // [::] есть Любой ipv6 адрес
 
+    #If there are several servers that match the IP address and port of the request, NGINX Plus tests the request’s Host header field against the server_name directives in the server blocks.
     server_name areggie.42.fr;
+
+    #To configure an HTTPS server, the ssl parameter must be enabled on listening sockets in the server block, and the locations of the server certificate and private key files should be specified:
 
     ssl_certificate_key /etc/ssl/private/nginx.key;
     ssl_certificate /etc/ssl/certs/nginx.crt;
+
+    #the difference b/n protocols is the safity of the handshake and the speed
     ssl_protocols TLSv1.2 TLSv1.3;
     
+
+    #If a request ends with a slash, NGINX treats it as a request for a directory and tries to find an index file in the directory. The index directive defines the index file’s name (the default value is index.html). 
+    #содержание первой страницы
     index index.php;
+
+    #The root directive specifies the file system path in which to search for the static files to serve
+    #The root directive specifies the root directory that will be used to search for a file. To obtain the path of a requested file, NGINX appends the request URI to the path specified by the root directive. The directive can be placed on any level within the http {}, server {}, or location {} contexts. In the example below, the root directive is defined for a virtual server.
     root /var/www/wordpress;
 
+
+    # If $uri doesn’t exist, try $uri/, if that doesn’t exist try a fallback location. In this case, if the $uri file exists, serve it. If not, check if that directory exists. If not, then proceed to serve index.html which you make sure exists. It’s loaded – but oh-so-simple! 
     location / {
         try_files $uri $uri/ /index.php$is_args$args;
     }
