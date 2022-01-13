@@ -44,11 +44,19 @@ server
             #Он создаёт переменную с указанием где и какой файл искать
             #https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+            #fastcgi_pass: The actual directive that passes requests in the current context to the backend. This defines the location where the FastCGI processor can be reached.
+            #https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx
+            #fastcgi - это постоянно работающий процесс, который слушает какой-то порт через сокет (таким образом он работает быстрее чем cgi который запускает процессы и завершает их и может быть перегружен)
             fastcgi_pass wordpress:9000;
+
+            #This defines the index file that should be appended to $fastcgi_script_name values that end with a slash (/)
             fastcgi_index index.php;
+
             include fastcgi_params;
             #some peers dont have  SCRIPT_FILENAME PATH_INFO
             #указание какой файл искать
+            #http://nginx.org/en/docs/http/ngx_http_core_module.html#var_request_filename
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             #указание где этот файл искать
             fastcgi_param PATH_INFO $fastcgi_path_info;
