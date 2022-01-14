@@ -1,0 +1,113 @@
+
+#The difference between Docker and Docker-compose is simple: docker commands are focused on only one container (or image) 
+#at once while docker-compose manage several containers docker.
+
+
+#simple version
+
+version: "3.5"
+
+
+# Указываем сеть 'localhost' в которой будут общаться контейнеры Сети можно дать имя чтобы было удобно смотреть при проверке работы сети
+#вообще сети в Docker Compose создается по умолчанию и не прописывается в явном виде
+#cетей может быть несколько и каждому контейнеру можно указывать отдельные сети чтобы контейнеры не могли общаться друг с другом
+#больше информации смотри в документации на сайте Docker Compose: https://docs.docker.com/compose/networking/
+networks: 
+        localhost: 
+                name: inet
+
+
+
+# в volumes сеть не указывается 
+volumes:
+        wordpress:
+                name: wordpress
+
+                #driver is local by default for host device, for external the driver is flocker
+                #even if you dont define driver explicitly it will be set as local by default
+                driver: local
+
+                #the options specified under driver_opts are similar to the options that are used for the mount command.
+                #https://stackoverflow.com/questions/59836742/docker-driver-opts-type-none/64198068
+                driver_opts:
+
+                        #the folders should be written in advance by a user or they can be prepared in makefile just before running docker-compose up
+                        device: /home/areggie/data/wordpress
+                        #o means that the parameters after it can be written using comma
+                        #Параметр -o указывает список параметров, разделенных запятыми. Source: https://www.opennet.ru/man.shtml?topic=mount&category=8
+                        #Дополнительно The only particularly notable option for routine use is that setting --opt o=bind --opt device=/some/source/dir uses Linux mount options to create a bind mount in a Docker named volume. 
+                        #source https://stackoverflow.com/questions/62232676/docker-local-volume-driver-options
+                        #опция o:bind  все равно что --opt o=bind --opt device=/some/source/dir, т.е. это привязка директории на хосте но за пределами контроля Докера 
+                        #источник: https://www.youtube.com/watch?v=VOK06Q4QqvE&lc=UgyGTRJVq-s8OYhv9Sh4AaABAg.9WpMjzFkhdx9WqePmeJdVs (watch 11:29)
+                        o: bind
+                        #The none just means that there is no physical disk partition linked to the mount point you see when issuing the mount command. 
+                        #It is used for virtual filesystems like shm, ramfs, proc and tmpfs.
+                        #https://stackoverflow.com/questions/59836742/docker-driver-opts-type-none/64198068
+                        #https://unix.stackexchange.com/questions/136646/what-is-type-none-for-mount-points-and-why-are-mount-points-of-the-same-type-b/136689#136689
+                        type: none
+        mariadb:
+                name: mariadb
+                driver: local
+                driver_opts:
+                        device: /home/areggie/data/mariadb
+                        o: bind
+                        type: none
+
+
+
+#3 контейнера: nginx, mariadb, wordpress общаются в одной сети "localhost" (имя в ней уже есть и здесь оно не упоманиается)
+#Docker service is the IMAGE for a microservice within the context of some larger application. Examples of services might include an HTTP server, a database, or any other type of executable program that you wish to run in a distributed environment.
+
+services:
+        # A Docker image (or container, or container image) contains application code, libraries, tools, dependencies and other files needed to make an application run.
+        # Docker Hub is a service provided by Docker for finding and sharing container images with your team.
+        nginx:
+                #зависит от контейнера wordpress (это значит сперва соберется wordpress a потом nginх)
+                depends_on:
+                        - wordpress
+                
+                #Specify a custom container name, rather than a generated default name. У контейнеров должны быть уникальные имена(это лучше чем по дефолту так как могут быть ошибки)
+                container_name: nginx_debian
+                
+                #Path to docker compose file directory (which has subdirectory ./nginx with nginx image).Из образа в этой папке собирается контейнер NGINX
+                build: ./nginx
+
+                #random image name (according to subj we need to have the name of the service, that same name here) 
+                #the image is pulled directly from Docker Hub (чтобы не скачивать образ из Хаба нужно просто дать непохожее имя для сервисов и образа)
+                #https://dker.ru/docs/docker-compose/compose-file-reference/#image
+                image: nginx
+
+                #стыковка портов слева направо: host (локальная машина)  : порт контейнера
+                ports:
+                        - "443:443"
+                
+                #стыковка томов на хосте : в контейнере (to save the changes and instant copying if there is a change on any side)
+                #практичный подход чтобы сохранялись изменения в томах даже после выключения контейнеров
+                volumes:
+                        - wordpress:/var/www/wordpress
+                
+                #установленная сеть для коммуникаций между контейнерами в рамках сети
+                networks:
+                        - localhost
+                #флаг постоянного перезапуска если контейнер упадет
+                restart: always
+        mariadb:  
+                container_name: mariadb_debian
+                build: ./mariadb
+                volumes:
+                        - mariadb:/var/lib/mysql
+                networks:
+                        - localhost
+                image: mariadb
+                restart: always
+        wordpress:
+                depends_on:
+                        - mariadb
+                container_name: wordpress_debian
+                build: ./wordpress
+                image: wordpress
+                volumes:
+                        - wordpress:/var/www/wordpress
+                networks:
+                        - localhost
+                restart: always
