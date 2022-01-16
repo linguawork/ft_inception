@@ -8,7 +8,8 @@ server
     listen 443 ssl;
 	
     #IPv6
-    listen [::]:443 ssl; // [::] есть Любой ipv6 адрес
+    #[::] есть Любой ipv6 адрес
+    listen [::]:443 ssl;  
 
     #If there are several servers that match the IP address and port of the request, NGINX Plus tests the request’s Host header field against the server_name directives in the server blocks.
     server_name areggie.42.fr;
