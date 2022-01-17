@@ -37,6 +37,8 @@ define( 'DB_CHARSET', 'utf8' );
 /** The database collate type. Don't change this if in doubt.  Collate means to collect. This is the default value. Some peers dont include it*/
 define( 'DB_COLLATE', '' );
 
+
+
 /**#@+
  * Authentication unique keys and salts.
  *
@@ -94,3 +96,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+?>
