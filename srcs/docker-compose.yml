@@ -75,7 +75,7 @@ services:
                 #random image name (according to subj we need to have the name of the service, that same name here) 
                 #the image is pulled directly from Docker Hub (чтобы не скачивать образ из Хаба нужно просто дать непохожее имя для сервисов и образа)
                 #https://dker.ru/docs/docker-compose/compose-file-reference/#image
-                image: nginx
+                #image: nginx
 
                 #стыковка портов слева направо: host (локальная машина)  : порт контейнера
                 ports:
@@ -98,14 +98,14 @@ services:
                         - mariadb:/var/lib/mysql
                 networks:
                         - localhost
-                image: mariadb
+                #image: mariadb
                 restart: always
         wordpress:
                 depends_on:
                         - mariadb
                 container_name: wordpress_debian
                 build: ./wordpress
-                image: wordpress
+                #image: wordpress
                 volumes:
                         - wordpress:/var/www/wordpress
                 networks:

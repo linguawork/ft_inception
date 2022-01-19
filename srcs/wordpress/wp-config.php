@@ -37,6 +37,8 @@ define( 'DB_CHARSET', 'utf8' );
 /** The database collate type. Don't change this if in doubt.  Collate means to collect. This is the default value. Some peers dont include it*/
 define( 'DB_COLLATE', '' );
 
+define( 'WP_ALLOW_REPAIR', true );
+
 
 
 /**#@+
