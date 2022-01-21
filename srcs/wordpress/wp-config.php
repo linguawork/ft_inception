@@ -26,7 +26,7 @@ define( 'DB_NAME', 'FalconGroupDB' );
 define( 'DB_USER', 'areggie' );
 
 /** Database password */
-define( 'DB_PASSWORD', 'password' );
+define( 'DB_PASSWORD', 'areggie' );
 
 /** Database hostname */
 define( 'DB_HOST', 'mariadb' );

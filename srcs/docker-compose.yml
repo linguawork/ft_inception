@@ -101,6 +101,7 @@ services:
                 #image: mariadb
                 restart: always
         wordpress:
+                env_file: .env
                 depends_on:
                         - mariadb
                 container_name: wordpress_debian
