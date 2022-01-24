@@ -1,11 +1,13 @@
 FROM debian:buster
 
-RUN apt-get update
+RUN apt-get update && apt-get install dialog apt-utils -y && apt-get upgrade
 
 RUN apt-get -y install php7.3 php-mysql php-fpm mariadb-client wget
 EXPOSE 9000
-#COPY ./www.conf /etc/php/7.3/fpm/pool.d/www.conf
-COPY ./www.conf /var/www/
+COPY ./www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY ./wp_php.sh /var/www/
+
+COPY ./wp-config.php /var/www/
 RUN chmod +x /var/www/wp_php.sh
 ENTRYPOINT ["/var/www/wp_php.sh"]
-CMD ["./usr/sbin/php-fpm7.3 -F", "--nodaemonize"]
+CMD ["/usr/sbin/php-fpm7.3 -F", "--nodaemonize"]

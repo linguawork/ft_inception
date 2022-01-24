@@ -3,7 +3,7 @@
 From debian:buster
 Run apt-get update
 Run apt-get install nginx -y
-Run apt-get install openssl -y
+Run apt-get install openssl -y && apt-get install dialog apt-utils -y && apt-get upgrade
 
 #all the flags are written in the COM file 
 # the manual is at  https://www.openssl.org/docs/man3.0/man1/openssl-req.html

@@ -1,5 +1,5 @@
 CREATE DATABASE FalconGroupDB;
-CREATE USER 'areggie'@'%' IDENTIFIED BY 'password';
+CREATE USER 'areggie'@'%' IDENTIFIED BY 'areggie';
 GRANT ALL PRIVILEGES ON FalconGroupDB.* TO 'areggie'@'%';
 FLUSH PRIVILEGES;
 

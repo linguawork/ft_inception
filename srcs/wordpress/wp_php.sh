@@ -7,17 +7,17 @@
 		chown -R www-data:www-data		/var/www/*
 		#даем доступ
 		chmod -R 755					/var/www/*
-if [! -f /var/www/wordpress/wp-config.php ]; then
 		mkdir -p /var/www/wordpress/
+if ! [ -f /var/www/wordpress/wp-config.php ]; then
+		mv /var/www/wp-config.php /var/www/wordpress/
 		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 		#adding permission to execute
 		chmod +x wp-cli.phar
-		mv wp-cli.phar user/local/bin/wp
-		echo "ATTN!!! WP_CLI INSTALLED, INSTALLING WORDPRESS..."
+		mv wp-cli.phar /usr/local/bin/wp
+		echo "ATTN!!! WP_CLI SAVED, INSTALLING WORDPRESS..."
 		cd var/www/wordpress/
 		#downloading word-press as root user
 		wp core download --allow-root
-		mv /var/www/wp-config.php /var/www/wordpress/
 		echo "APPLYING .env parameters to WORDPRESS..."
 		wp core install --allow-root \
 			--url=${WP_WEB_URL_NO_HTTP} \
