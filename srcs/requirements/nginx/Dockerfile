@@ -2,8 +2,8 @@
 #but in VSCode we still have colored fonts for differentiation
 From debian:buster
 Run apt-get update
-Run apt-get install nginx -y
-Run apt-get install openssl -y && apt-get install dialog apt-utils -y && apt-get upgrade
+Run apt-get install nginx -y procps
+Run apt-get install openssl -y &&  apt-get install dialog apt-utils -y && apt-get upgrade
 
 #all the flags are written in the COM file 
 # the manual is at  https://www.openssl.org/docs/man3.0/man1/openssl-req.html
@@ -27,7 +27,7 @@ Run apt-get install openssl -y && apt-get install dialog apt-utils -y && apt-get
 Run openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/certs/nginx.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=Linguawork/OU=MandzhievBS/CN=https:\/\/github.com\/linguawork/emailAddress=mixedworldcitizen@gmail.com"
 
 #copy the default config from the root folder inside container folder
-COPY ./default etc/nginx/sites-enabled/default
+COPY ./conf/default etc/nginx/sites-enabled/default
 
 #Nginx uses the daemon off directive to run in the foreground. If it's inconvenient to put this in the configuration file, we can specify it directly on the command line. This makes it easy to run in debug mode (foreground) and directly switch to running in production mode (background) by changing command line args. To run in foreground: nginx -g 'daemon off;' To run in background: nginx  По умолчанию в современным nginx image прописана команда запуск nginх на переднем плане чтобы можно было дебажить
 CMD ["nginx", "-g", "daemon off;"]

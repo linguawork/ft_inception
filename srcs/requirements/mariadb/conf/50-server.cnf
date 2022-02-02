@@ -37,7 +37,7 @@ lc-messages-dir         = /usr/share/mysql
 # * Fine Tuning
 #
 key_buffer_size = 16M
-max_allowed_packet = 16M
+max_allowed_packet = 200M
 thread_stack = 192K
 thread_cache_size = 8
 # This replaces the startup script and checks MyISAM tables if needed

@@ -28,6 +28,8 @@ if ! [ -f /var/www/wordpress/wp-config.php ]; then
 		wp user create --allow-root user2 user2@42.fr --user_pass=user2
 fi
 #запуск одного процесса и замена им текущего процесса: "Сделайте все в этом сценарии .sh, а затем в той же оболочке выполните команду, которую пользователь передает в командной строке».
-exec "$@"
+#exec "$@"
+exec /usr/sbin/php-fpm7.3 -F --nodaemonize
+#/usr/sbin/php-fpm7.3 -F --nodaemonize
 
 

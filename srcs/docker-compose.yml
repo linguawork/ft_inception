@@ -5,16 +5,16 @@
 
 #simple version
 
-version: "3.5"
+version: "3.7"
 
 
 # Указываем сеть 'localhost' в которой будут общаться контейнеры Сети можно дать имя чтобы было удобно смотреть при проверке работы сети
 #вообще сети в Docker Compose создается по умолчанию и не прописывается в явном виде
 #cетей может быть несколько и каждому контейнеру можно указывать отдельные сети чтобы контейнеры не могли общаться друг с другом
 #больше информации смотри в документации на сайте Docker Compose: https://docs.docker.com/compose/networking/
-networks: 
-        localhost: 
-                name: inet
+networks:  
+        my_network:
+                name: net
 
 
 
@@ -32,7 +32,7 @@ volumes:
                 driver_opts:
 
                         #the folders should be written in advance by a user or they can be prepared in makefile just before running docker-compose up
-                        device: /home/areggie/data/wordpress
+                        device: ${HOME}/data/wordpress
                         #o means that the parameters after it can be written using comma
                         #Параметр -o указывает список параметров, разделенных запятыми. Source: https://www.opennet.ru/man.shtml?topic=mount&category=8
                         #Дополнительно The only particularly notable option for routine use is that setting --opt o=bind --opt device=/some/source/dir uses Linux mount options to create a bind mount in a Docker named volume. 
@@ -49,7 +49,7 @@ volumes:
                 name: mariadb
                 driver: local
                 driver_opts:
-                        device: /home/areggie/data/mariadb
+                        device: ${HOME}/data/mariadb
                         o: bind
                         type: none
 
@@ -62,20 +62,22 @@ services:
         # A Docker image (or container, or container image) contains application code, libraries, tools, dependencies and other files needed to make an application run.
         # Docker Hub is a service provided by Docker for finding and sharing container images with your team.
         nginx:
+                env_file: .env 
                 #зависит от контейнера wordpress (это значит сперва соберется wordpress a потом nginх)
                 depends_on:
                         - wordpress
                 
                 #Specify a custom container name, rather than a generated default name. У контейнеров должны быть уникальные имена(это лучше чем по дефолту так как могут быть ошибки)
-                container_name: nginx_debian
+                container_name: nginx_container
                 
                 #Path to docker compose file directory (which has subdirectory ./nginx with nginx image).Из образа в этой папке собирается контейнер NGINX
-                build: ./nginx
+                build: ./requirements/nginx
 
                 #random image name (according to subj we need to have the name of the service, that same name here) 
                 #the image is pulled directly from Docker Hub (чтобы не скачивать образ из Хаба нужно просто дать непохожее имя для сервисов и образа)
                 #https://dker.ru/docs/docker-compose/compose-file-reference/#image
-                #image: nginx
+                #другая опция - дать имя через переменные окружения
+                image: nginx_image:freshest
 
                 #стыковка портов слева направо: host (локальная машина)  : порт контейнера
                 ports:
@@ -88,27 +90,28 @@ services:
                 
                 #установленная сеть для коммуникаций между контейнерами в рамках сети
                 networks:
-                        - localhost
+                        - my_network
                 #флаг постоянного перезапуска если контейнер упадет
                 restart: always
-        mariadb:  
-                container_name: mariadb_debian
-                build: ./mariadb
+        mariadb:
+                env_file: .env  
+                container_name: mariadb_container
+                build: ./requirements/mariadb
                 volumes:
                         - mariadb:/var/lib/mysql
                 networks:
-                        - localhost
-                #image: mariadb
+                        - my_network
+                image: mariadb_image:freshest
                 restart: always
         wordpress:
                 env_file: .env
                 depends_on:
                         - mariadb
-                container_name: wordpress_debian
-                build: ./wordpress
-                #image: wordpress
+                container_name: wordpress_container
+                build: ./requirements/wordpress
+                image: wordpress_image:freshest
                 volumes:
                         - wordpress:/var/www/wordpress
                 networks:
-                        - localhost
+                        - my_network
                 restart: always
