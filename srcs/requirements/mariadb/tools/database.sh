@@ -9,6 +9,11 @@ echo "Making database..."
 if [ ! -d var/lib/mysql/FalconGroupDB ]; then
 echo "Inside IF"
 service mysql start
+
+mkdir /var/run/mysqld
+touch /var/run/mysqld/mysqlf.pid
+mkfifo /var/run/mysqld/mysqlf.sock
+
 mysql -u root -e "create database if not exists $MYSQL_DATA_BASE;"
 mysql -u root -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASS';"
 mysql -u root -e "grant all privileges on $MYSQL_DATA_BASE.* to '$MYSQL_USER'@'%';"
@@ -25,8 +30,8 @@ fi
 
 chown -R mysql /var/run/mysqld
 
-#exec "$@"
+exec "$@"
 #exec /usr/bin/mysqld_safe
-exec mysqld
+#exec mysqld
 
 

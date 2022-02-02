@@ -20,19 +20,19 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'FalconGroupDB' );
+define( 'DB_NAME', getenv('MYSQL_DATA_BASE') );
 
 /** Database username */
-define( 'DB_USER', 'areggie' );
+define( 'DB_USER', getenv('WP_ADM_USER') );
 
 /** Database password */
-define( 'DB_PASSWORD', 'areggie' );
+define( 'DB_PASSWORD', getenv('WP_ADM_PASSWORD') );
 
 /** Database hostname */
-define( 'DB_HOST', 'mariadb' );
+define( 'DB_HOST', getenv('WP_DB_HOSTNAME') );
 
 /** Database charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
+define( 'DB_CHARSET', getenv('WP_CHARSET') );
 
 /** The database collate type. Don't change this if in doubt.  Collate means to collect. This is the default value. Some peers dont include it*/
 define( 'DB_COLLATE', '' );

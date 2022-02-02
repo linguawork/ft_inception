@@ -10,4 +10,4 @@ COPY ./tools/wp_php.sh /var/www/
 COPY ./conf/wp-config.php /var/www/
 RUN chmod +x /var/www/wp_php.sh
 ENTRYPOINT ["/var/www/wp_php.sh"]
-#CMD ["/usr/sbin/php-fpm7.3 -F", "--nodaemonize"]
+#CMD ["/usr/sbin/php-fpm7.3 -F --nodaemonize"]

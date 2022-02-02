@@ -1,6 +1,8 @@
 server 
 {	
-	#listening to the port for requests from the web
+	
+    
+    #listening to the port for requests from the web
 	#https server setting (Http +SSL + TLS)
 
     #The server configuration block usually includes a listen directive to specify the IP address and port (or Unix domain socket and path) on which the server listens for requests. Both IPv4 and IPv6 addresses are accepted; enclose IPv6 addresses in square brackets.
@@ -13,7 +15,7 @@ server
 
     #If there are several servers that match the IP address and port of the request, NGINX Plus tests the request’s Host header field against the server_name directives in the server blocks.
     server_name areggie.42.fr;
-
+ 
     #To configure an HTTPS server, the ssl parameter must be enabled on listening sockets in the server block, and the locations of the server certificate and private key files should be specified:
 
     ssl_certificate_key /etc/ssl/private/nginx.key;

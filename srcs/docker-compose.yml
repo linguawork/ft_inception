@@ -14,7 +14,7 @@ version: "3.7"
 #больше информации смотри в документации на сайте Docker Compose: https://docs.docker.com/compose/networking/
 networks:  
         my_network:
-                name: net
+                name: my_pretty_network
 
 
 

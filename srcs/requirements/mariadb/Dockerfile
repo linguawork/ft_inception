@@ -8,7 +8,7 @@ EXPOSE 3306
 COPY ./tools/database.sh /var/www/
 RUN chmod +x /var/www/database.sh
 ENTRYPOINT ["/var/www/database.sh"]
-#CMD ["mysqld"]
+CMD ["mysqld"]
 
 #COPY ./createdb.sql /
 #RUN chmod 755 /createdb.sql
