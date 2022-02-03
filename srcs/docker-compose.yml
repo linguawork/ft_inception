@@ -115,7 +115,6 @@ services:
                 networks:
                         - my_network
                 restart: always
-
         redis:
                 env_file: .env
                 container_name: redis_container
@@ -125,5 +124,15 @@ services:
                 restart: always
                 ports:
                         - "6379:6379"
+                networks:
+                        - my_network
+        adminer:
+                container_name: adminer_container
+                build: ./requirements/bonus/adminer
+                image: adminer:freshest
+                depends_on:
+                        - wordpress
+                volumes:
+                        - wordpress:/var/www/wordpress
                 networks:
                         - my_network
