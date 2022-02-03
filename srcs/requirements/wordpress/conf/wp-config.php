@@ -18,6 +18,20 @@
  * @package WordPress
  */
 
+define( 'WP_CACHE', true);
+//Salt for the cache objects, site-url, replace dot and forward slash with dash
+define( 'WP_CACHE_KEY_SALT', getenv('WP_WEB_URL_NO_HTTP') ); 
+//IP or hostname of the target server. Either app/container name, i.e. redis1 or localhost
+define( 'WP_REDIS_HOST', getenv('WP_REDIS_HOST_NAME') ); 
+// Either the default 6379 when using appName as host or 30xxx port number found in app quick view
+define( 'WP_REDIS_PORT', getenv('WP_REDIS_PORT_NUM') ); 
+//either not set as there is no password by default for Redis, or if you changed redis password, set it here 
+
+
+
+
+
+
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', getenv('MYSQL_DATA_BASE') );

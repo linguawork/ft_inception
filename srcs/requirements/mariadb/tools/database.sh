@@ -10,7 +10,7 @@ if [ ! -d var/lib/mysql/FalconGroupDB ]; then
 echo "Inside IF"
 service mysql start
 
-mkdir /var/run/mysqld
+mkdir -p /var/run/mysqld
 touch /var/run/mysqld/mysqlf.pid
 mkfifo /var/run/mysqld/mysqlf.sock
 

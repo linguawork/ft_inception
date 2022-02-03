@@ -26,6 +26,15 @@ if ! [ -f /var/www/wordpress/wp-config.php ]; then
 			--admin_password=${WP_ADM_PASSWORD} \
 			--admin_email=${WP_ADM_EMAIL}
 		wp user create --allow-root user2 user2@42.fr --user_pass=user2
+		#below line is for redis
+		mv /var/www/object-cache.php /var/www/html/wp-content/
+		#below lines are for redis caching on php
+		wp plugin install redis-cache --allow-root
+		wp plugin activate redis-cache --allow-root
+		wp redis enable --force --allow-root
+
+
+
 fi
 
 #запуск одного процесса и замена им текущего процесса: "Сделайте все в этом сценарии .sh, а затем в той же оболочке выполните команду, которую пользователь передает в командной строке».

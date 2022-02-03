@@ -15,6 +15,7 @@
 #I created the folders myself 
 
 #explanation of mkdir with flag -p https://pubs.opengroup.org/onlinepubs/9699919799/utilities/mkdir.html
+# - p: Create any missing intermediate pathname components.
 # env variable ${HOME} is used for convenience and automation (not to type by hand home/Baatr or home/areggie), depends on computer and for portability
 
 all:
