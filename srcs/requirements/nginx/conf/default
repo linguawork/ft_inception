@@ -11,7 +11,7 @@ server
 	
     #IPv6
     #[::] есть Любой ipv6 адрес
-    listen [::]:443 ssl;  
+    listen [::]:443 ssl;
 
     #If there are several servers that match the IP address and port of the request, NGINX Plus tests the request’s Host header field against the server_name directives in the server blocks.
     server_name areggie.42.fr;
@@ -22,7 +22,7 @@ server
     ssl_certificate /etc/ssl/certs/nginx.crt;
 
     #the difference b/n protocols is the safity of the handshake and the speed
-    ssl_protocols TLSv1.3; #TLSv1.2
+    ssl_protocols  TLSv1.2 TLSv1.3;
     
 
     #If a request ends with a slash, NGINX treats it as a request for a directory and tries to find an index file in the directory. The index directive defines the index file’s name (the default value is index.html). 
@@ -41,6 +41,10 @@ server
     #location / {
     #    try_files $uri $uri/ /index.php$is_args$args;
     #}
+    location /site {
+	    rewrite /site(.*) /$1 break;
+	    proxy_pass https://site:443;
+    }
 
     location ~ [^/]\.php(/|$) {
             #try_files $uri =404;

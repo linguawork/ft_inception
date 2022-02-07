@@ -9,9 +9,3 @@ COPY ./tools/database.sh /var/www/
 RUN chmod +x /var/www/database.sh
 ENTRYPOINT ["/var/www/database.sh"]
 CMD ["mysqld"]
-
-#COPY ./createdb.sql /
-#RUN chmod 755 /createdb.sql
-#RUN service mysql start && mysql < createdb.sql 
-#RUN rm -f createdb.sql
-#CMD ["/usr/bin/mysqld_safe"]

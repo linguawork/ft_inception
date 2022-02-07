@@ -136,3 +136,26 @@ services:
                         - wordpress:/var/www/wordpress
                 networks:
                         - my_network
+        ftp:
+                container_name: ftp
+                build: ./requirements/bonus/ftp
+                image: ftp
+                depends_on:
+                        - wordpress
+                volumes:
+                        - wordpress:/ftp
+                ports:
+                        - "21:21"
+                        - "20:20"
+                        - "21000-21000:21000-21000"
+                networks:
+                        - my_network
+  
+        site:
+                container_name: site
+                build:
+                        context: ./requirements/bonus/site
+                image: site
+                restart: always
+                networks:
+                        - my_network

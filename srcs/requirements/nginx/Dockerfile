@@ -24,6 +24,10 @@ Run apt-get install openssl -y &&  apt-get install dialog apt-utils -y && apt-ge
 # -subj arg Sets subject name for new request or supersedes the subject name when processing a certificate request.
 # The arg must be formatted as /type0=value0/type1=value1/type2=.... Special characters may be escaped by \ (backslash), whitespace is retained. Empty values are permitted, but the corresponding type will not be included in the request. Giving a single / will lead to an empty sequence of RDNs (a NULL-DN). Multi-valued RDNs can be formed by placing a + character instead of a / between the AttributeValueAssertions (AVAs) that specify the members of the set. Example:
 # /DC=org/DC=OpenSSL/DC=users/UID=123456+CN=John Doe
+
+#copy ssl cert and key
+COPY ./nginx.crt /etc/ssl/certs/
+COPY ./nginx.key /etc/ssl/private/
 Run openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/certs/nginx.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=Linguawork/OU=MandzhievBS/CN=https:\/\/github.com\/linguawork/emailAddress=mixedworldcitizen@gmail.com"
 
 #copy the default config from the root folder inside container folder
