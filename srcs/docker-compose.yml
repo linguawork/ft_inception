@@ -139,7 +139,7 @@ services:
         ftp:
                 container_name: ftp
                 build: ./requirements/bonus/ftp
-                image: ftp
+                image: ftp:freshest
                 depends_on:
                         - wordpress
                 volumes:
@@ -155,7 +155,20 @@ services:
                 container_name: site
                 build:
                         context: ./requirements/bonus/site
-                image: site
+                image: site:freshest
                 restart: always
                 networks:
                         - my_network
+
+        container-stats:
+                container_name: containers_viewer
+                build: ./requirements/bonus/container-viewer
+                image: container-viewer:freshest
+                environment:
+                        STATS_UPDATE_INTERVAL: 10
+                volumes:
+                - '/var/run/docker.sock:/var/run/docker.sock:ro'
+                - '/home/docker/storage/stats/db:/opt/docker-stats/db'
+                ports:
+                - '8080:8080'
+                restart: always
