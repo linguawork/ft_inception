@@ -56,7 +56,7 @@ I set up:
 cache.
 • FTP server container pointing to the volume of my WordPress website.
 • simple static website in HTML,  presenting my "resume sample".
-• Adminer (PHP-admin like tool, but faster.
-• Container supervisor service  which shows the metrics of every container in use.
+• Adminer (PHP-admin like tool, but faster.)
+• Container supervisor service,  which shows the metrics of every container in use.
 
 
