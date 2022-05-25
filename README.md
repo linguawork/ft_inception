@@ -7,7 +7,7 @@ I virtualized several Docker images, creating them in my new personal virtual ma
 
 
 • This project was done on a Virtual Machine.
-• All the files required for the configuration of your project were placed in a "srcs"
+• All the files required for the configuration of the project were placed in a "srcs"
 folder.
 • A Makefile was created and was located at the root of the directory. Makefile sets up the entire application (i.e., it builds the Docker images using
 docker-compose.yml).
