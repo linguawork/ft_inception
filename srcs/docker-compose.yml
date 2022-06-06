@@ -1,6 +1,6 @@
 
-#The difference between Docker and Docker-compose is simple: docker commands are focused on only one container (or image) 
-#at once while docker-compose manage several containers docker.
+#The difference between Docker and Docker-compose is simple: docker commands are focused on only one container (or image) at once
+# while docker-compose manages several docker containers.
 
 
 #simple version
